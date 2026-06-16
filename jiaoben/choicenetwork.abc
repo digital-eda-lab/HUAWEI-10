@@ -1,0 +1,28 @@
+#主要解决14-23，26尤其关注
+
+
+read_lib /data/stable_test_tool/synth_tool/synth_tool/flow/platforms/tsmc28/lib/tcbn28hpcplusbwp7t40p140lvttt0p9v25c.lib
+read_blif /data/xinglangqi/huawei/tc_public/tc_public_22/input.blif
+sweep;strash; ps;
+&get -nm;&dch;&nf;&put;stime;;&get -nm;&dch;&choice;&nf;&put;;strash; ps; 
+balance;drf;rewrite;&get -nm;&st;&dsdb;&put;&get -nm;&blut;&put;&get -nm;&st;&dsdb;&put;&get -nm; &nf; &put;;sop; fx; strash; ps; 
+balance; irw;&get -nm; &dch; &nf; &put;;strash; ps; 
+dfraig;ifraig;balance; irw;&get -nm; &sopb; &put;&get -nm; &synch2; &nf; &put;;&get -nm; &dch; &nf; &put;;&get -nm; &dch; &nf; &put;;&get -nm; &synch2; &choice; &nf; &put;;strash; ps; 
+rewrite; rewrite;&get -nm; &sopb; &put;strash; ps; 
+rewrite;&get -nm; &synch2; &choice; &nf; &put;;&get -nm; &nf; &put;;sop; fx; strash; ps; 
+dfraig; dfraig;&get -nm; &st; &dsdb; &put;&get -nm; &dch; &choice; &nf; &put;;&get -nm; &dch; &choice; &nf; &put;;&get -nm; &blut; &put;strash; ps; 
+rewrite;ifraig;rewrite; rewrite; drf;&get -nm; &choice; &nf; &put;;&get -nm; &st; &dsdb; &put;&get -nm; &choice; &nf; &put;;&get -nm; &dch; &nf; &put;;&get -nm; &sopb; &put;&get -nm; &choice; &nf; &put;;strash; ps; 
+dfraig;&get -nm; &blut; &put; &get -nm; &dch; &choice; &put; dc2; ps
+
+
+
+
+read_lib /data/stable_test_tool/synth_tool/synth_tool/flow/platforms/tsmc28/lib/tcbn28hpcplusbwp7t40p140lvttt0p9v25c.lib
+read_blif /data/xinglangqi/huawei/tc_public/tc_public_26/input.blif
+balance; irw;&get -nm; &dch; &nf; &put;;strash; ps; 
+dfraig;ifraig;balance; irw;&get -nm; &sopb; &put;&get -nm; &synch2; &nf; &put;;&get -nm; &dch; &nf; &put;;&get -nm; &dch; &nf; &put;;&get -nm; &synch2; &choice; &nf; &put;;strash; ps; 
+rewrite; rewrite;&get -nm; &sopb; &put;strash; ps; 
+rewrite;&get -nm; &synch2; &choice; &nf; &put;;&get -nm; &nf; &put;;sop; fx; strash; ps; 
+dfraig; dfraig;&get -nm; &st; &dsdb; &put;&get -nm; &dch; &choice; &nf; &put;;&get -nm; &dch; &choice; &nf; &put;;&get -nm; &blut; &put;strash; ps; 
+rewrite;ifraig;rewrite; rewrite; drf;&get -nm; &choice; &nf; &put;;&get -nm; &st; &dsdb; &put;&get -nm; &choice; &nf; &put;;&get -nm; &dch; &nf; &put;;&get -nm; &sopb; &put;&get -nm; &choice; &nf; &put;;strash; ps; 
+dfraig;&get -nm; &blut; &put; &get -nm; &dch; &choice; &put; dc2; ps

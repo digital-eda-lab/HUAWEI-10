@@ -1,0 +1,11 @@
+sweep;strash; ps;
+&get -nm;&dch; &st; &if;&put; &get -nm;&dch;&choice; &st; &if;&put;;strash; ps; 
+balance;drf;rewrite;&get -nm; &st;&dsdb;&put;&get -nm;&blut;&put;&get -nm; &st;&dsdb;&put;&get -nm;  &st; &if; &put;;sop; fx; strash; ps; 
+balance; irw;&get -nm; &dch;  &st; &if; &put;;strash; ps; 
+dfraig;ifraig;balance; irw;&get -nm; &sopb; &put;&get -nm; &synch2;  &st; &if; &put;;&get -nm; &dch;  &st; &if; &put;;&get -nm; &dch;  &st; &if; &put;;&get -nm; &synch2; &choice;  &st; &if; &put;;strash; ps; 
+rewrite; rewrite;&get -nm; &sopb; &put;strash; ps; 
+rewrite;&get -nm; &synch2; &choice;  &st; &if; &put;;&get -nm;  &st; &if; &put;;sop; fx; strash; ps; 
+dfraig; dfraig;&get -nm;  &st; &dsdb; &put;&get -nm; &dch; &choice;  &st; &if; &put;;&get -nm; &dch; &choice;  &st; &if; &put;;&get -nm; &blut; &put;strash; ps; 
+rewrite;ifraig;rewrite; rewrite; drf;&get -nm; &choice;  &st; &if; &put;;&get -nm;  &st; &dsdb; &put;&get -nm; &choice;  &st; &if; &put;;&get -nm; &dch;  &st; &if; &put;;&get -nm; &sopb; &put;&get -nm; &choice;  &st; &if; &put;;strash; ps; 
+dfraig;&get -nm; &blut; &put; &get -nm; &dch; &choice; &put; dc2; ps
+
