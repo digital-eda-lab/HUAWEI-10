@@ -20,3 +20,12 @@ tc_public_1,97,9,0.151320,1.320
 ```
 python run_tc_public_abc.py --flow /path/to/flow/script --cases 1-30(也可以1，2，3，5-20写法) --output a.csv
 ```
+
+## 自动运行并打榜
+csv尾部会带有使用的综合流，方便记忆综合流
+脚本会把已有的csv也进行打分，不过重名会报错，
+```
+自动运行并打榜，a.abc生成/datacsv/a.csv,b.abc生成/datacsv/b.csv.
+然后会自动调用score_rank.py打榜，生成排名文件/datacsv/ranking.csv
+python run_flow_and_score.py a.abc b.abc c.abc
+```

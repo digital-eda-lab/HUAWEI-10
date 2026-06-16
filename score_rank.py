@@ -11,7 +11,7 @@ from pathlib import Path
 
 
 METRICS = ("and_count", "lev_count", "runtime_sec", "extra_peak_rss_mb")
-REQUIRED_COLUMNS = ("casename",) + METRICS
+REQUIRED_COLUMNS = ("case",) + METRICS
 WEIGHTS = {
     "and_count": Decimal("0.5"),
     "lev_count": Decimal("0.2"),
@@ -24,7 +24,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description=(
             "Score and rank CSV result files. Each input CSV must contain "
-            "casename,and_count,lev_count,runtime_sec,extra_peak_rss_mb."
+            "case,and_count,lev_count,runtime_sec,extra_peak_rss_mb."
         )
     )
     parser.add_argument("csv_files", nargs="+", help="Input CSV result files.")
@@ -74,25 +74,49 @@ def read_result_csv(path: Path) -> dict[str, dict[str, Decimal]]:
         raise ValueError(f"{path}: cannot open file: {exc}") from exc
 
     with handle:
-        reader = csv.DictReader(handle)
-        if reader.fieldnames is None:
+        reader = csv.reader(handle)
+        header: list[str] | None = None
+        header_line_number = 0
+
+        for line_number, row in enumerate(reader, start=1):
+            if not row or all(not cell.strip() for cell in row):
+                continue
+            if row[0].lstrip().startswith("#"):
+                continue
+            header = [cell.strip() for cell in row]
+            header_line_number = line_number
+            break
+
+        if header is None:
             raise ValueError(f"{path}: empty CSV or missing header")
 
-        missing = [column for column in REQUIRED_COLUMNS if column not in reader.fieldnames]
+        missing = [column for column in REQUIRED_COLUMNS if column not in header]
         if missing:
             raise ValueError(f"{path}: missing required columns: {', '.join(missing)}")
+        column_indexes = {column: header.index(column) for column in REQUIRED_COLUMNS}
+
+        def get_cell(row: list[str], column: str) -> str:
+            index = column_indexes[column]
+            return row[index].strip() if index < len(row) else ""
 
         rows: dict[str, dict[str, Decimal]] = {}
-        for row_number, row in enumerate(reader, start=2):
-            casename = (row.get("casename") or "").strip()
-            if not casename:
-                raise ValueError(f"{path}:{row_number}: empty casename")
-            if casename in rows:
-                raise ValueError(f"{path}:{row_number}: duplicate casename: {casename}")
+        for row_number, row in enumerate(reader, start=header_line_number + 1):
+            if not row or all(not cell.strip() for cell in row):
+                if rows:
+                    break
+                continue
+            if row[0].lstrip().startswith("#"):
+                continue
+
+            case = get_cell(row, "case")
+            if not case:
+                raise ValueError(f"{path}:{row_number}: empty case")
+            if case in rows:
+                raise ValueError(f"{path}:{row_number}: duplicate case: {case}")
 
             metric_values: dict[str, Decimal] = {}
             for metric in METRICS:
-                raw_value = (row.get(metric) or "").strip()
+                raw_value = get_cell(row, metric)
                 try:
                     metric_values[metric] = Decimal(raw_value)
                 except InvalidOperation as exc:
@@ -100,7 +124,7 @@ def read_result_csv(path: Path) -> dict[str, dict[str, Decimal]]:
                         f"{path}:{row_number}: invalid numeric value for {metric}: {raw_value!r}"
                     ) from exc
 
-            rows[casename] = metric_values
+            rows[case] = metric_values
 
     if not rows:
         raise ValueError(f"{path}: no data rows")
@@ -151,13 +175,13 @@ def compute_scores(
     totals = {source_name: Decimal("0") for source_name in source_names}
     detail_rows: list[dict[str, object]] = []
 
-    for casename in case_names:
+    for case in case_names:
         metric_ranks: dict[str, dict[str, int]] = {}
         metric_scores: dict[str, dict[str, Decimal]] = {}
 
         for metric in METRICS:
             values = [
-                (source_name, result_by_file[source_name][casename][metric])
+                (source_name, result_by_file[source_name][case][metric])
                 for source_name in source_names
             ]
             ranks = competition_ranks(values)
@@ -174,10 +198,10 @@ def compute_scores(
 
             row: dict[str, object] = {
                 "source_csv": source_name,
-                "casename": casename,
+                "case": case,
             }
             for metric in METRICS:
-                row[metric] = result_by_file[source_name][casename][metric]
+                row[metric] = result_by_file[source_name][case][metric]
             for metric in METRICS:
                 row[f"{metric}_rank"] = metric_ranks[metric][source_name]
             for metric in METRICS:
@@ -225,7 +249,7 @@ def main() -> int:
         detail_rows, summary_rows = compute_scores(result_by_file)
 
         detail_fields = (
-            ["source_csv", "casename"]
+            ["source_csv", "case"]
             + list(METRICS)
             + [f"{metric}_rank" for metric in METRICS]
             + [f"{metric}_score" for metric in METRICS]
