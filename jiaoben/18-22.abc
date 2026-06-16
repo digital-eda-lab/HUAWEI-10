@@ -1,1 +1,0 @@
-sop; fx; strash; rewrite;&get -nm; &synch2; &choice; &st; &if; &put;;&get -nm; &st; &if; &put;; strash; ps

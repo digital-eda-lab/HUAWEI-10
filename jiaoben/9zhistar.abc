@@ -1,3 +1,4 @@
+read_blif /data/xinglangqi/HUAWEI-10/tc_public/tc_public_22/input.blif
 sweep;strash; ps;
 &get -nm;&dch; &st; &if;&put; &get -nm;&dch;&choice; &st; &if;&put;;strash; ps; 
 balance;drf;rewrite;&get -nm; &st;&dsdb;&put;&get -nm;&blut;&put;&get -nm; &st;&dsdb;&put;&get -nm;  &st; &if; &put;;sop; fx; strash; ps; 

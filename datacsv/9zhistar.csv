@@ -1,0 +1,46 @@
+case,and_count,lev_count,runtime_sec,extra_peak_rss_mb
+tc_public_1,107,9,0.764666,21.820
+tc_public_2,19,5,0.465011,21.527
+tc_public_3,116,9,0.723679,21.973
+tc_public_4,82,8,0.669322,21.797
+tc_public_5,65,2,0.318694,20.746
+tc_public_6,162,4,0.619951,22.004
+tc_public_7,252,3,0.359045,21.461
+tc_public_8,192,4,0.365803,21.000
+tc_public_9,194,4,0.422666,21.352
+tc_public_10,161,4,0.309034,21.254
+tc_public_11,328,8,0.915617,22.176
+tc_public_12,1447,12,3.321345,23.242
+tc_public_13,1042,13,3.726306,23.230
+tc_public_14,2045,15,17.082391,24.910
+tc_public_15,794,10,2.224345,22.199
+tc_public_16,45,6,0.475599,20.363
+tc_public_17,93,6,0.519496,20.617
+tc_public_18,432,12,5.425044,20.703
+tc_public_19,3912,18,56.102116,25.125
+tc_public_20,3984,18,63.803162,25.375
+tc_public_21,4167,18,75.178755,25.316
+tc_public_22,9231,20,110.218486,28.711
+tc_public_23,1350,14,3.973832,22.684
+tc_public_24,215,8,0.715591,21.527
+tc_public_25,26,5,0.361093,20.898
+tc_public_26,672,9,3.479978,21.809
+tc_public_27,422,8,1.676206,21.859
+tc_public_28,384,7,1.619765,21.660
+tc_public_29,109,7,0.420961,21.301
+tc_public_30,5454,19,54.873973,31.273
+
+# FLOW_BEGIN
+# read_blif /data/xinglangqi/HUAWEI-10/tc_public/tc_public_22/input.blif
+# sweep;strash; ps;
+# &get -nm;&dch; &st; &if;&put; &get -nm;&dch;&choice; &st; &if;&put;;strash; ps; 
+# balance;drf;rewrite;&get -nm; &st;&dsdb;&put;&get -nm;&blut;&put;&get -nm; &st;&dsdb;&put;&get -nm;  &st; &if; &put;;sop; fx; strash; ps; 
+# balance; irw;&get -nm; &dch;  &st; &if; &put;;strash; ps; 
+# dfraig;ifraig;balance; irw;&get -nm; &sopb; &put;&get -nm; &synch2;  &st; &if; &put;;&get -nm; &dch;  &st; &if; &put;;&get -nm; &dch;  &st; &if; &put;;&get -nm; &synch2; &choice;  &st; &if; &put;;strash; ps; 
+# rewrite; rewrite;&get -nm; &sopb; &put;strash; ps; 
+# rewrite;&get -nm; &synch2; &choice;  &st; &if; &put;;&get -nm;  &st; &if; &put;;sop; fx; strash; ps; 
+# dfraig; dfraig;&get -nm;  &st; &dsdb; &put;&get -nm; &dch; &choice;  &st; &if; &put;;&get -nm; &dch; &choice;  &st; &if; &put;;&get -nm; &blut; &put;strash; ps; 
+# rewrite;ifraig;rewrite; rewrite; drf;&get -nm; &choice;  &st; &if; &put;;&get -nm;  &st; &dsdb; &put;&get -nm; &choice;  &st; &if; &put;;&get -nm; &dch;  &st; &if; &put;;&get -nm; &sopb; &put;&get -nm; &choice;  &st; &if; &put;;strash; ps; 
+# dfraig;&get -nm; &blut; &put; &get -nm; &dch; &choice; &put; dc2; ps
+# 
+# FLOW_END

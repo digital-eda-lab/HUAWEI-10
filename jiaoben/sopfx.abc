@@ -1,4 +1,3 @@
-#解决了1-13,24,27,30
 sop;
 fx;
 strash
@@ -29,10 +28,8 @@ balance
 aigstore -i 1
 rewrite_share -z -K 20 -S 1 -T 2 -M 1 -R 1; rewrite_share -z -K 20 -S 1 -T 2 -M 1 -R 1;&get -nm; &sopb; &put; strash;
 aigstore -i 2
-strash; rewrite;&get -nm; &synch2; &choice; &st; &if; &put;;&get -nm; &st; &if; &put;;sop; fx; strash; ps
-strash; rewrite;&get -nm; &synch2; &choice; &st; &if; &put;;&get -nm; &st; &if; &put;;sop; fx; strash; ps
-strash; rewrite;&get -nm; &synch2; &choice; &st; &if; &put;;&get -nm; &st; &if; &put;;sop; fx; strash; ps
-dc2
-dc2
+strash; rewrite;&get -nm; &synch2; &choice; &st; &if; &put;; strash; ps
+strash; rewrite;&get -nm; &synch2; &choice; &st; &if; &put;; strash; ps
+strash; rewrite;&get -nm; &synch2; &choice; &st; &if; &put;; strash; ps
 aigrestore -a
 ps
