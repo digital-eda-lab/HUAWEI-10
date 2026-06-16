@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import csv
 import os
 import re
 import signal
@@ -27,6 +28,7 @@ PS_RE = re.compile(
     r"lev\s*=\s*(?P<lev>\d+)",
     re.IGNORECASE,
 )
+RESULT_COLUMNS = ["case", "and_count", "lev_count", "runtime_sec", "extra_peak_rss_mb"]
 
 
 def case_sort_key(path: Path) -> tuple[int, str]:
@@ -234,6 +236,15 @@ def run_case(
     return and_count, lev_count, runtime_sec, peak_rss_mb
 
 
+def write_results_csv(output_path: Path, results: list[tuple[str, int, int, float, float]]) -> None:
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with output_path.open("w", newline="", encoding="utf-8") as csv_file:
+        writer = csv.writer(csv_file)
+        writer.writerow(RESULT_COLUMNS)
+        for case_name, and_count, lev_count, runtime_sec, extra_peak_rss_mb in results:
+            writer.writerow([case_name, and_count, lev_count, f"{runtime_sec:.6f}", f"{extra_peak_rss_mb:.3f}"])
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--abc", type=Path, default=DEFAULT_ABC, help="ABC executable path")
@@ -243,6 +254,7 @@ def main() -> int:
     parser.add_argument("--cases", help="case numbers to run, e.g. 1 or 1,3,26 or 1-5,26")
     parser.add_argument("--timeout", type=int, default=None, help="timeout seconds for each case")
     parser.add_argument("--limit", type=int, default=None, help="run only the first N cases")
+    parser.add_argument("--output", type=Path, help="write the final result table to this CSV file")
     args = parser.parse_args()
 
     abc = args.abc.resolve()
@@ -289,9 +301,14 @@ def main() -> int:
     if not results:
         raise RuntimeError("No case was run")
 
-    print("case,and_count,lev_count,runtime_sec,extra_peak_rss_mb")
+    print(",".join(RESULT_COLUMNS))
     for case_name, and_count, lev_count, runtime_sec, extra_peak_rss_mb in results:
         print(f"{case_name},{and_count},{lev_count},{runtime_sec:.6f},{extra_peak_rss_mb:.3f}")
+
+    if args.output:
+        output = args.output.resolve()
+        write_results_csv(output, results)
+        print(f"CSV written: {output}")
     return 0
 
 
