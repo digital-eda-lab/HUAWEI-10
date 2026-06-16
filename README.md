@@ -13,7 +13,7 @@ https://aws128smuu4.feishu.cn/wiki/LQZ3woILLiqsxXk4cgRcLOiUnAg
 python score_rank.py a.csv b.csv c.csv
 
 其中csv文件格式如下
-casename,and_count,lev_count,runtime_sec,extra_peak_rss_mb
+case,and_count,lev_count,runtime_sec,extra_peak_rss_mb
 tc_public_1,97,9,0.151320,1.320
 ```
 ## 批量运行脚本
