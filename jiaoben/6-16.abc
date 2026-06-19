@@ -1,0 +1,35 @@
+sop;
+fx;
+strash
+balance
+aigstore -i 0
+rewrite_share -z -K 20 -S 1 -T 2 -M 1 -R 1
+rewrite -z
+refactor
+refactor -z
+b -l; rewrite_share -z -K 20 -S 1 -T 2 -M 1 -R 1; rf -l; b -l; rewrite_share -z -K 20 -S 1 -T 2 -M 1 -R 1; rwz -l; b -l; rfz -l; rwz -l; b -l
+dch
+b -l; rewrite_share -z -K 20 -S 1 -T 2 -M 1 -R 1; rf -l; b -l; rewrite_share -z -K 20 -S 1 -T 2 -M 1 -R 1; rwz -l; b -l; rfz -l; rwz -l; b -l
+balance
+balance
+rewrite_share -z -K 20 -S 1 -T 2 -M 1 -R 1 
+rewrite_share -z
+refactor
+refactor -z
+b -l; rewrite_share -z -K 20 -S 1 -T 2 -M 1 -R 1; rf -l; b -l; rewrite_share -z -K 20 -S 1 -T 2 -M 1 -R 1; rwz -l; b -l; rfz -l; rwz -l; b -l
+dch
+b -l; rewrite_share -z -K 20 -S 1 -T 2 -M 1 -R 1; rf -l; b -l; rewrite_share -z -K 20 -S 1 -T 2 -M 1 -R 1; rwz -l; b -l; rfz -l; rwz -l; b -l
+balance
+strash
+rewrite_share -z -K 20 -S 1 -T 2 -M 1 -R 1
+rewrite_share -z -K 20 -S 1 -T 2 -M 1 -R 1
+refactor
+balance
+aigstore -i 1
+rewrite_share -z -K 20 -S 1 -T 2 -M 1 -R 1; rewrite_share -z -K 20 -S 1 -T 2 -M 1 -R 1;&get -nm; &sopb; &put; strash;
+aigstore -i 2
+strash; rewrite;&get -nm; &synch2; &choice; &st; &if; &put;; strash; ps
+strash; rewrite;&get -nm; &synch2; &choice; &st; &if; &put;; strash; ps
+strash; rewrite;&get -nm; &synch2; &choice; &st; &if; &put;; strash; ps
+aigrestore -a
+ps

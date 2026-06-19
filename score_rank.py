@@ -12,6 +12,14 @@ from pathlib import Path
 
 METRICS = ("and_count", "lev_count", "runtime_sec", "extra_peak_rss_mb")
 REQUIRED_COLUMNS = ("case",) + METRICS
+SUMMARY_WEIGHTED_SCORE_FIELDS = tuple(f"{metric}_weighted_score" for metric in METRICS)
+SUMMARY_WEIGHTED_RANK_FIELDS = tuple(f"{metric}_weighted_rank" for metric in METRICS)
+SUMMARY_METRIC_FIELDS = tuple(
+    field
+    for score_field, rank_field in zip(SUMMARY_WEIGHTED_SCORE_FIELDS, SUMMARY_WEIGHTED_RANK_FIELDS)
+    for field in (score_field, rank_field)
+)
+SUMMARY_FIELDS = ["source_csv", "total_score", "final_rank"] + list(SUMMARY_METRIC_FIELDS)
 WEIGHTS = {
     "and_count": Decimal("0.5"),
     "lev_count": Decimal("0.2"),
@@ -173,6 +181,10 @@ def compute_scores(
     source_names = sorted(result_by_file)
     case_names = sorted(next(iter(result_by_file.values())))
     totals = {source_name: Decimal("0") for source_name in source_names}
+    metric_totals = {
+        source_name: {metric: Decimal("0") for metric in METRICS}
+        for source_name in source_names
+    }
     detail_rows: list[dict[str, object]] = []
 
     for case in case_names:
@@ -191,10 +203,14 @@ def compute_scores(
             }
 
         for source_name in source_names:
-            weighted_score = sum(
-                metric_scores[metric][source_name] * WEIGHTS[metric] for metric in METRICS
-            )
+            metric_weighted_scores = {
+                metric: metric_scores[metric][source_name] * WEIGHTS[metric]
+                for metric in METRICS
+            }
+            weighted_score = sum(metric_weighted_scores.values())
             totals[source_name] += weighted_score
+            for metric in METRICS:
+                metric_totals[source_name][metric] += metric_weighted_scores[metric]
 
             row: dict[str, object] = {
                 "source_csv": source_name,
@@ -210,14 +226,27 @@ def compute_scores(
             detail_rows.append(row)
 
     final_ranks = competition_ranks(list(totals.items()), reverse=True)
-    summary_rows = [
-        {
+    metric_total_ranks = {
+        metric: competition_ranks(
+            [
+                (source_name, metric_totals[source_name][metric])
+                for source_name in source_names
+            ],
+            reverse=True,
+        )
+        for metric in METRICS
+    }
+    summary_rows = []
+    for source_name in source_names:
+        row: dict[str, object] = {
             "source_csv": source_name,
             "total_score": totals[source_name],
             "final_rank": final_ranks[source_name],
         }
-        for source_name in source_names
-    ]
+        for metric in METRICS:
+            row[f"{metric}_weighted_score"] = metric_totals[source_name][metric]
+            row[f"{metric}_weighted_rank"] = metric_total_ranks[metric][source_name]
+        summary_rows.append(row)
     summary_rows.sort(key=lambda row: (int(row["final_rank"]), str(row["source_csv"])))
 
     return detail_rows, summary_rows
@@ -255,10 +284,8 @@ def main() -> int:
             + [f"{metric}_score" for metric in METRICS]
             + ["case_weighted_score"]
         )
-        summary_fields = ["source_csv", "total_score", "final_rank"]
-
         write_csv(Path(args.detail_out), detail_fields, detail_rows)
-        write_csv(Path(args.summary_out), summary_fields, summary_rows)
+        write_csv(Path(args.summary_out), SUMMARY_FIELDS, summary_rows)
     except ValueError as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 1

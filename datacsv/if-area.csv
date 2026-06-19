@@ -1,0 +1,40 @@
+case,and_count,lev_count,runtime_sec,extra_peak_rss_mb
+tc_public_1,112,8,0.251305,5.059
+tc_public_2,19,4,0.151393,3.520
+tc_public_3,121,8,0.201401,5.062
+tc_public_4,70,7,0.201123,4.926
+tc_public_5,65,2,0.101224,2.750
+tc_public_6,162,4,0.251981,4.992
+tc_public_7,252,3,0.201716,3.574
+tc_public_8,193,3,0.251726,3.113
+tc_public_9,224,5,0.201458,4.441
+tc_public_10,161,4,0.150972,4.293
+tc_public_11,592,7,0.702589,3.836
+tc_public_12,1509,11,1.554019,5.781
+tc_public_13,1059,12,1.403441,5.656
+tc_public_14,2272,14,9.519819,7.258
+tc_public_15,936,9,1.153281,5.512
+tc_public_16,45,6,0.151114,4.359
+tc_public_17,93,6,0.151341,4.359
+tc_public_18,414,12,0.904032,3.129
+tc_public_19,3423,18,14.979306,5.684
+tc_public_20,3534,18,15.380370,5.168
+tc_public_21,3573,18,12.925602,6.062
+tc_public_22,7179,20,28.152625,9.609
+tc_public_23,1232,13,1.603978,4.090
+tc_public_24,250,7,0.401921,4.355
+tc_public_25,26,4,0.151293,4.305
+tc_public_26,552,10,1.002592,4.359
+tc_public_27,464,8,0.501460,4.402
+tc_public_28,500,8,0.601602,4.355
+tc_public_29,113,5,0.200969,4.777
+tc_public_30,6255,16,24.896890,25.207
+
+# FLOW_BEGIN
+# strash; rewrite;&get -nm; &synch2; &choice; &st; &if -K 6 -C 16 -F 2 -A 3; &put;; strash; ps
+# strash; rewrite;&get -nm; &synch2; &choice; &st; &if -K 6 -C 16 -F 2 -A 3; &put;; strash; ps
+# strash; rewrite;&get -nm; &synch2; &choice; &st; &if -K 6 -C 16 -F 2 -A 3; &put;; strash; ps
+# strash; rewrite;&get -nm; &synch2; &choice; &st; &if -K 6 -C 16 -F 2 -A 3; &put;; strash; ps
+# strash; rewrite;&get -nm; &synch2; &choice; &st; &if -K 6 -C 16 -F 2 -A 3; &put;; strash; ps
+# strash; rewrite;&get -nm; &synch2; &choice; &st; &if -K 6 -C 16 -F 2 -A 3; &put;; strash; ps
+# FLOW_END

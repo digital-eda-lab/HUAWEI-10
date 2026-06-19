@@ -201,12 +201,10 @@ def write_rank_outputs(result_paths: list[Path], detail_out: Path, summary_out: 
         + [f"{metric}_score" for metric in score_rank.METRICS]
         + ["case_weighted_score"]
     )
-    summary_fields = ["source_csv", "total_score", "final_rank"]
-
     detail_out.parent.mkdir(parents=True, exist_ok=True)
     summary_out.parent.mkdir(parents=True, exist_ok=True)
     score_rank.write_csv(detail_out, detail_fields, detail_rows)
-    score_rank.write_csv(summary_out, summary_fields, summary_rows)
+    score_rank.write_csv(summary_out, score_rank.SUMMARY_FIELDS, summary_rows)
 
 
 def main() -> int:

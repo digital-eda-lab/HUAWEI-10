@@ -1,0 +1,49 @@
+case,and_count,lev_count,runtime_sec,extra_peak_rss_mb
+tc_public_1,98,9,0.401546,5.043
+tc_public_2,19,4,0.151336,3.523
+tc_public_3,117,9,0.551995,5.066
+tc_public_4,74,6,0.301400,4.934
+tc_public_5,65,2,0.151414,2.754
+tc_public_6,162,4,0.502084,4.996
+tc_public_7,252,3,0.301573,3.828
+tc_public_8,193,3,0.451692,3.371
+tc_public_9,224,5,0.501849,4.438
+tc_public_10,161,4,0.251397,4.297
+tc_public_11,592,7,1.454060,5.395
+tc_public_12,1518,11,3.508149,6.418
+tc_public_13,1059,12,3.908542,5.891
+tc_public_14,2260,12,18.538895,7.281
+tc_public_15,857,10,2.806571,5.781
+tc_public_16,45,6,0.201400,4.367
+tc_public_17,93,6,0.251391,4.367
+tc_public_18,414,12,2.959159,4.715
+tc_public_19,3429,18,38.835031,5.625
+tc_public_20,3537,18,45.141451,5.625
+tc_public_21,3549,18,43.445114,7.320
+tc_public_22,6789,20,43.998395,9.586
+tc_public_23,1193,13,3.358284,4.820
+tc_public_24,236,7,0.602444,4.367
+tc_public_25,26,4,0.151342,4.309
+tc_public_26,576,9,1.253639,4.629
+tc_public_27,451,8,0.802440,4.656
+tc_public_28,492,8,1.053559,4.094
+tc_public_29,108,5,0.301546,4.781
+tc_public_30,6185,17,39.639059,25.211
+
+# FLOW_BEGIN
+# strash; rewrite;&get -nm; &synch2; &choice; &st; &if; &put;; strash; ps
+# strash; rewrite;&get -nm; &synch2; &choice; &st; &if; &put;; strash; ps
+# strash; rewrite;&get -nm; &synch2; &choice; &st; &if; &put;; strash; ps
+# strash; rewrite;&get -nm; &synch2; &choice; &st; &if; &put;; strash; ps
+# strash; rewrite;&get -nm; &synch2; &choice; &st; &if; &put;; strash; ps
+# strash; rewrite;&get -nm; &synch2; &choice; &st; &if; &put;; strash; ps
+# strash; rewrite;&get -nm; &synch2; &choice; &st; &if; &put;; strash; ps
+# strash; rewrite;&get -nm; &synch2; &choice; &st; &if; &put;; strash; ps
+# strash; rewrite;&get -nm; &synch2; &choice; &st; &if; &put;; strash; ps
+# strash; rewrite;&get -nm; &synch2; &choice; &st; &if; &put;; strash; ps
+# strash; rewrite;&get -nm; &synch2; &choice; &st; &if; &put;; strash; ps
+# strash; rewrite;&get -nm; &synch2; &choice; &st; &if; &put;; strash; ps
+# strash; rewrite;&get -nm; &synch2; &choice; &st; &if; &put;; strash; ps
+# strash; rewrite;&get -nm; &synch2; &choice; &st; &if; &put;; strash; ps
+# strash; rewrite;&get -nm; &synch2; &choice; &st; &if; &put;; strash; ps
+# FLOW_END

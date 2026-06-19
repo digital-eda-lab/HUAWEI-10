@@ -1,0 +1,72 @@
+case,and_count,lev_count,runtime_sec,extra_peak_rss_mb
+tc_public_1,94,8,0.301248,6.949
+tc_public_2,19,4,0.151056,7.137
+tc_public_3,99,8,0.251490,7.535
+tc_public_4,64,7,0.251368,7.008
+tc_public_5,65,2,0.151223,3.973
+tc_public_6,162,4,0.251415,8.285
+tc_public_7,252,3,0.251577,5.359
+tc_public_8,192,4,0.251259,5.117
+tc_public_9,194,4,0.301576,5.461
+tc_public_10,161,4,0.201142,5.535
+tc_public_11,328,7,0.451872,7.430
+tc_public_12,1365,12,1.854612,10.184
+tc_public_13,1035,14,2.104906,9.191
+tc_public_14,2221,14,9.370188,16.926
+tc_public_15,894,10,1.155319,9.141
+tc_public_16,45,6,0.151297,3.605
+tc_public_17,93,6,0.251587,4.125
+tc_public_18,411,12,2.305609,5.148
+tc_public_19,3432,18,18.941327,18.773
+tc_public_20,3597,18,23.299400,21.453
+tc_public_21,3576,18,23.396439,20.898
+tc_public_22,7863,20,37.826662,39.148
+tc_public_23,1323,13,2.355677,9.594
+tc_public_24,215,8,0.401615,7.547
+tc_public_25,26,4,0.151060,4.055
+tc_public_26,798,9,1.253614,8.359
+tc_public_27,376,7,0.652323,7.797
+tc_public_28,483,8,0.802398,7.598
+tc_public_29,109,7,0.251446,6.641
+tc_public_30,3846,21,12.828296,25.293
+
+# FLOW_BEGIN
+# sop;
+# fx;
+# strash
+# balance
+# aigstore -i 0
+# rewrite_share -z -K 20 -S 1 -T 2 -M 1 -R 1
+# rewrite -z
+# refactor
+# refactor -z
+# b -l; rewrite_share -z -K 20 -S 1 -T 2 -M 1 -R 1; rf -l; b -l; rewrite_share -z -K 20 -S 1 -T 2 -M 1 -R 1; rwz -l; b -l; rfz -l; rwz -l; b -l
+# dch
+# b -l; rewrite_share -z -K 20 -S 1 -T 2 -M 1 -R 1; rf -l; b -l; rewrite_share -z -K 20 -S 1 -T 2 -M 1 -R 1; rwz -l; b -l; rfz -l; rwz -l; b -l
+# balance
+# balance
+# rewrite_share -z -K 20 -S 1 -T 2 -M 1 -R 1 
+# rewrite_share -z
+# refactor
+# refactor -z
+# b -l; rewrite_share -z -K 20 -S 1 -T 2 -M 1 -R 1; rf -l; b -l; rewrite_share -z -K 20 -S 1 -T 2 -M 1 -R 1; rwz -l; b -l; rfz -l; rwz -l; b -l
+# dch
+# b -l; rewrite_share -z -K 20 -S 1 -T 2 -M 1 -R 1; rf -l; b -l; rewrite_share -z -K 20 -S 1 -T 2 -M 1 -R 1; rwz -l; b -l; rfz -l; rwz -l; b -l
+# balance
+# strash
+# rewrite_share -z -K 20 -S 1 -T 2 -M 1 -R 1
+# rewrite_share -z -K 20 -S 1 -T 2 -M 1 -R 1
+# refactor
+# balance
+# aigstore -i 1
+# rewrite_share -z -K 20 -S 1 -T 2 -M 1 -R 1; rewrite_share -z -K 20 -S 1 -T 2 -M 1 -R 1;&get -nm; &sopb; &put; strash;
+# aigstore -i 2
+# strash; rewrite;&get -nm; &synch2; &choice; &st; &if -a -K 6 -C 16 -F 2 -A 3; &put;; strash; ps
+# strash; rewrite;&get -nm; &synch2; &choice; &st; &if -a -K 6 -C 16 -F 2 -A 3; &put;; strash; ps
+# strash; rewrite;&get -nm; &synch2; &choice; &st; &if -a -K 6 -C 16 -F 2 -A 3; &put;; strash; ps
+# strash; rewrite;&get -nm; &synch2; &choice; &st; &if -a -K 6 -C 16 -F 2 -A 3; &put;; strash; ps
+# strash; rewrite;&get -nm; &synch2; &choice; &st; &if -a -K 6 -C 16 -F 2 -A 3; &put;; strash; ps
+# strash; rewrite;&get -nm; &synch2; &choice; &st; &if -a -K 6 -C 16 -F 2 -A 3; &put;; strash; ps
+# aigrestore -a
+# ps
+# FLOW_END

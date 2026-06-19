@@ -1,0 +1,44 @@
+case,and_count,lev_count,runtime_sec,extra_peak_rss_mb
+tc_public_1,132,9,0.201482,4.547
+tc_public_2,19,4,0.101225,2.742
+tc_public_3,137,8,0.201520,4.543
+tc_public_4,115,9,0.201380,4.668
+tc_public_5,65,2,0.101294,4.035
+tc_public_6,224,5,0.101300,4.734
+tc_public_7,252,3,0.101142,3.309
+tc_public_8,193,3,0.151056,3.105
+tc_public_9,224,5,0.100914,4.180
+tc_public_10,161,4,0.101146,4.031
+tc_public_11,592,7,0.401800,4.863
+tc_public_12,1644,12,0.702505,4.750
+tc_public_13,1046,12,0.602149,5.395
+tc_public_14,2479,17,6.526722,6.508
+tc_public_15,1070,10,0.858106,5.203
+tc_public_16,45,6,0.100854,3.844
+tc_public_17,93,6,0.151078,3.848
+tc_public_18,414,10,0.301508,4.148
+tc_public_19,3414,18,2.255258,5.105
+tc_public_20,3522,18,2.305701,5.008
+tc_public_21,3567,18,2.005171,7.848
+tc_public_22,7149,20,4.610126,10.516
+tc_public_23,1314,13,1.253346,5.887
+tc_public_24,241,7,0.251174,4.359
+tc_public_25,26,4,0.101418,3.793
+tc_public_26,1143,10,0.852489,5.137
+tc_public_27,476,7,0.301692,3.848
+tc_public_28,614,8,0.451524,3.832
+tc_public_29,135,5,0.151172,4.504
+tc_public_30,6881,17,15.181983,25.203
+
+# FLOW_BEGIN
+# strash; rewrite;&get -nm; &synch2; &st; &if -a -K 6 -C 16 -F 2 -A 3; &put;; strash; ps
+# strash; rewrite;&get -nm; &synch2; &st; &if -a -K 6 -C 16 -F 2 -A 3; &put;; strash; ps
+# aigstore -i 0
+# strash; rewrite;&get -nm; &synch2; &st; &if -a -K 6 -C 16 -F 2 -A 3; &put;; strash; ps
+# strash; rewrite;&get -nm; &synch2; &st; &if -a -K 6 -C 16 -F 2 -A 3; &put;; strash; ps
+# aigstore -i 1
+# strash; rewrite;&get -nm; &synch2; &st; &if -a -K 6 -C 16 -F 2 -A 3; &put;; strash; ps
+# strash; rewrite;&get -nm; &synch2; &st; &if -a -K 6 -C 16 -F 2 -A 3; &put;; strash; ps
+# aigrestore -a
+# ps
+# FLOW_END
