@@ -1,0 +1,38 @@
+sop;
+fx;
+strash
+balance
+aigstore -i 0
+drw
+rewrite -z
+refactor
+refactor -z
+b -l; drw; rf -l; b -l; drw; rwz -l; b -l; rfz -l; rwz -l; b -l
+dch
+b -l; drw; rf -l; b -l; drw; rwz -l; b -l; rfz -l; rwz -l; b -l
+balance
+balance
+drw 
+rewrite_share -z
+refactor
+refactor -z
+b -l; drw; rf -l; b -l; drw; rwz -l; b -l; rfz -l; rwz -l; b -l
+dch
+b -l; drw; rf -l; b -l; drw; rwz -l; b -l; rfz -l; rwz -l; b -l
+balance
+strash
+drw
+drw
+refactor
+balance
+aigstore -i 1
+drw; drw;&get -nm; &sopb; &put; strash;
+aigstore -i 2
+strash; rewrite;&get -nm; &synch2; &choice; &st; &if -a -K 6 -C 16 -F 2 -A 3; &put;; strash; ps
+strash; rewrite;&get -nm; &synch2; &choice; &st; &if -a -K 6 -C 16 -F 2 -A 3; &put;; strash; ps
+strash; rewrite;&get -nm; &synch2; &choice; &st; &if -a -K 6 -C 16 -F 2 -A 3; &put;; strash; ps
+strash; rewrite;&get -nm; &synch2; &choice; &st; &if -a -K 6 -C 16 -F 2 -A 3; &put;; strash; ps
+strash; rewrite;&get -nm; &synch2; &choice; &st; &if -a -K 6 -C 16 -F 2 -A 3; &put;; strash; ps
+strash; rewrite;&get -nm; &synch2; &choice; &st; &if -a -K 6 -C 16 -F 2 -A 3; &put;; strash; ps
+aigrestore -a
+ps

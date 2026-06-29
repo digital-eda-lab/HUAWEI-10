@@ -37,9 +37,9 @@ def case_sort_key(path: Path) -> tuple[int, str]:
 
 
 def discover_cases(case_dir: Path) -> list[Path]:
-    cases = sorted(case_dir.glob("tc_public_*/input.blif"), key=case_sort_key)
+    cases = sorted(case_dir.glob("tc_public_*/output.blif"), key=case_sort_key)
     if not cases:
-        raise FileNotFoundError(f"No cases found under {case_dir}/tc_public_*/input.blif")
+        raise FileNotFoundError(f"No cases found under {case_dir}/tc_public_*/output.blif")
     return cases
 
 
@@ -82,7 +82,7 @@ def select_cases(case_dir: Path, case_numbers: list[int]) -> list[Path]:
     cases = []
     missing = []
     for number in case_numbers:
-        path = case_dir / f"tc_public_{number}" / "input.blif"
+        path = case_dir / f"tc_public_{number}" / "output.blif"
         if path.is_file():
             cases.append(path)
         else:

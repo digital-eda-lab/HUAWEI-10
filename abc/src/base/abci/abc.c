@@ -150,6 +150,7 @@ static int Abc_CommandRunEco                 ( Abc_Frame_t * pAbc, int argc, cha
 static int Abc_CommandRunGen                 ( Abc_Frame_t * pAbc, int argc, char ** argv );
 static int Abc_CommandRunScript              ( Abc_Frame_t * pAbc, int argc, char ** argv );
 static int Abc_CommandRunTest                ( Abc_Frame_t * pAbc, int argc, char ** argv );
+static int Abc_CommandMockturtleWr           ( Abc_Frame_t * pAbc, int argc, char ** argv );
 
 static int Abc_CommandRewrite                ( Abc_Frame_t * pAbc, int argc, char ** argv );
 static int Abc_CommandRewriteProfile         ( Abc_Frame_t * pAbc, int argc, char ** argv );
@@ -1042,6 +1043,7 @@ void Abc_Init( Abc_Frame_t * pAbc )
 
     Cmd_CommandAdd( pAbc, "Various",      "logic",         Abc_CommandLogic,            1 );
     Cmd_CommandAdd( pAbc, "Various",      "comb",          Abc_CommandComb,             1 );
+    Cmd_CommandAdd( pAbc, "Various",      "mtwr",          Abc_CommandMockturtleWr,     1 );
     Cmd_CommandAdd( pAbc, "Various",      "miter",         Abc_CommandMiter,            1 );
     Cmd_CommandAdd( pAbc, "Various",      "miter2",        Abc_CommandMiter2,           1 );
     Cmd_CommandAdd( pAbc, "Various",      "demiter",       Abc_CommandDemiter,          1 );
@@ -7532,6 +7534,133 @@ usage:
     Abc_Print( -2, "\t-v       : toggle verbose printout [default = %s]\n", fVerbose? "yes": "no" );
     Abc_Print( -2, "\t-h       : print the command usage\n");
     Abc_Print( -2, "\t<file>   : file to write the truth tables to\n");    
+    return 1;
+}
+
+/**Function*************************************************************
+
+  Synopsis    []
+
+  Description []
+
+  SideEffects []
+
+  SeeAlso     []
+
+***********************************************************************/
+static int Abc_CommandMockturtleWr( Abc_Frame_t * pAbc, int argc, char ** argv )
+{
+    char * pExe = getenv( "ABC_MTWR" );
+    char pFileIn[1024];
+    char pFileOut[1024];
+    char pCommand[4096];
+    int c, RetValue, nIters = 20, fVerbose = 0;
+#ifndef _WIN32
+    int Pid = getpid();
+#else
+    int Pid = 0;
+#endif
+
+    if ( pExe == NULL || pExe[0] == 0 )
+        pExe = "/data/xinglangqi/mockturtle/build/examples/window_rewrite_file";
+
+    Extra_UtilGetoptReset();
+    while ( ( c = Extra_UtilGetopt( argc, argv, "Nne:vh" ) ) != EOF )
+    {
+        switch ( c )
+        {
+        case 'N':
+        case 'n':
+            if ( globalUtilOptind >= argc )
+            {
+                Abc_Print( -1, "Command line switch \"-%c\" should be followed by a positive integer.\n", c );
+                goto usage;
+            }
+            nIters = atoi( argv[globalUtilOptind] );
+            globalUtilOptind++;
+            if ( nIters < 1 )
+                goto usage;
+            break;
+        case 'e':
+            if ( globalUtilOptind >= argc )
+            {
+                Abc_Print( -1, "Command line switch \"-e\" should be followed by an executable path.\n" );
+                goto usage;
+            }
+            pExe = argv[globalUtilOptind];
+            globalUtilOptind++;
+            break;
+        case 'v':
+            fVerbose ^= 1;
+            break;
+        case 'h':
+            goto usage;
+        default:
+            goto usage;
+        }
+    }
+
+    if ( argc != globalUtilOptind )
+        goto usage;
+    if ( Abc_FrameReadNtk(pAbc) == NULL )
+    {
+        Abc_Print( -1, "Empty network.\n" );
+        return 1;
+    }
+    if ( strchr( pExe, '\'' ) != NULL )
+    {
+        Abc_Print( -1, "Executable path cannot contain a single quote: %s\n", pExe );
+        return 1;
+    }
+
+    snprintf( pFileIn,  sizeof(pFileIn),  "/tmp/abc_mtwr_%d_in.aig",  Pid );
+    snprintf( pFileOut, sizeof(pFileOut), "/tmp/abc_mtwr_%d_out.aig", Pid );
+
+    snprintf( pCommand, sizeof(pCommand), "write_aiger %s", pFileIn );
+    if ( Cmd_CommandExecute( pAbc, pCommand ) )
+    {
+        Abc_Print( -1, "mtwr: failed to write temporary AIGER file \"%s\".\n", pFileIn );
+        remove( pFileIn );
+        remove( pFileOut );
+        return 1;
+    }
+
+    snprintf( pCommand, sizeof(pCommand), "'%s' '%s' '%s' %d", pExe, pFileIn, pFileOut, nIters );
+    if ( fVerbose )
+        Abc_Print( 1, "mtwr: running %s\n", pCommand );
+#if defined(__wasm)
+    RetValue = 1;
+#else
+    RetValue = system( pCommand );
+#endif
+    if ( RetValue != 0 )
+    {
+        Abc_Print( -1, "mtwr: mockturtle command failed: %s\n", pCommand );
+        remove( pFileIn );
+        remove( pFileOut );
+        return 1;
+    }
+
+    snprintf( pCommand, sizeof(pCommand), "read_aiger %s", pFileOut );
+    if ( Cmd_CommandExecute( pAbc, pCommand ) )
+    {
+        Abc_Print( -1, "mtwr: failed to read optimized AIGER file \"%s\".\n", pFileOut );
+        remove( pFileIn );
+        remove( pFileOut );
+        return 1;
+    }
+
+    remove( pFileIn );
+    remove( pFileOut );
+    return 0;
+
+usage:
+    Abc_Print( -2, "usage: mtwr [-N num] [-e path] [-vh]\n" );
+    Abc_Print( -2, "\t           optimizes the current network using mockturtle window rewriting\n" );
+    Abc_Print( -2, "\t-N num   : maximum number of rewriting iterations [default = %d]\n", nIters );
+    Abc_Print( -2, "\t-e path  : mockturtle wrapper executable [default = %s]\n", pExe );
+    Abc_Print( -2, "\t-v       : toggle printing the external command [default = %s]\n", fVerbose? "yes": "no" );
+    Abc_Print( -2, "\t-h       : print the command usage\n" );
     return 1;
 }
 

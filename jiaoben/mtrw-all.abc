@@ -1,0 +1,38 @@
+sop;
+fx;
+strash
+balance
+aigstore -i 0
+mtwr
+mtwr
+refactor
+refactor -z
+b -l; mtwr; refactor -l; b -l; mtwr; mtwr; b -l; refactor -z -l; mtwr; b -l
+dch
+b -l; mtwr; refactor -l; b -l; mtwr; mtwr; b -l; refactor -z -l; mtwr; b -l
+balance
+balance
+mtwr 
+mtwr
+refactor
+refactor -z
+b -l; mtwr; refactor -l; b -l; mtwr; mtwr; b -l; refactor -z -l; mtwr; b -l
+dch
+b -l; mtwr; refactor -l; b -l; mtwr; mtwr; b -l; refactor -z -l; mtwr; b -l
+balance
+strash
+mtwr
+mtwr
+refactor
+balance
+aigstore -i 1
+mtwr; mtwr;&get -nm; &sopb; &put; strash;
+aigstore -i 2
+strash; mtwr;&get -nm; &synch2; &choice; &st; &if -a -K 6 -C 16 -F 2 -A 3; &put;; strash; ps
+strash; mtwr;&get -nm; &synch2; &choice; &st; &if -a -K 6 -C 16 -F 2 -A 3; &put;; strash; ps
+strash; mtwr;&get -nm; &synch2; &choice; &st; &if -a -K 6 -C 16 -F 2 -A 3; &put;; strash; ps
+strash; mtwr;&get -nm; &synch2; &choice; &st; &if -a -K 6 -C 16 -F 2 -A 3; &put;; strash; ps
+strash; mtwr;&get -nm; &synch2; &choice; &st; &if -a -K 6 -C 16 -F 2 -A 3; &put;; strash; ps
+strash; mtwr;&get -nm; &synch2; &choice; &st; &if -a -K 6 -C 16 -F 2 -A 3; &put;; strash; ps
+aigrestore -a
+ps
